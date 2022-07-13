@@ -2,6 +2,7 @@
 lua <<EOF
     local lsp = require('lsp-zero')
 
+    lsp.preset('recommended')
     lsp.set_preferences({
       suggest_lsp_servers = true,
       setup_servers_on_start = true,
@@ -10,12 +11,7 @@ lua <<EOF
       cmp_capabilities = true,
       manage_nvim_cmp = true,
       call_servers = 'local',
-      sign_icons = {
-        error = 'X',
-        warn = '!',
-        hint = '#',
-        info = 'i'
-      }
+      sign_icons = {}
     })
 
     lsp.setup()
