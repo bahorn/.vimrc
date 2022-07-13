@@ -20,9 +20,6 @@ set t_Co=256
 " set term=xterm-256color
 set termencoding=utf-8
 
-let g:python_host_prog  = '/usr/bin/python3'
-let g:python3_host_prog = '/usr/bin/python3'
-
 set backupdir=~/.vim/tmp,.
 set directory=~/.vim/tmp,.
 

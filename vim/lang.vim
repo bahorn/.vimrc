@@ -1,5 +1,10 @@
+let g:poetv_auto_activate = 1
+
 " language server setup
 lua <<EOF
+    -- pylsp needs to be done separately because of venv support
+    require'lspconfig'.pylsp.setup{}
+
     local lsp = require('lsp-zero')
 
     lsp.preset('recommended')

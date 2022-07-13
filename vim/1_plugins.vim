@@ -1,4 +1,7 @@
 call plug#begin('~/.vim/plugged')
+    " Python venv Support
+    Plug 'petobens/poet-v'
+
     " UI
     Plug 'itchyny/lightline.vim'
     Plug 'flazz/vim-colorschemes'
