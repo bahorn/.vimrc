@@ -8,6 +8,6 @@ install: init.vim
 	cp init.vim ~/.config/nvim/init.vim
 	vim +PlugInstall +PlugUpdate +UpdateRemotePlugins +qa
 	# LSPs we want
-	vim +"LspInstall pylsp clangd" +qa
+	vim +"LspInstall pylsp clangd eslint bashls vimls ltex" +qa
 	# PyLSP extras
 	vim +"PylspInstall pylsp-mypy pyls-isort" +qa
