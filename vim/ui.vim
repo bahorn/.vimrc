@@ -11,10 +11,6 @@ endif
 
 " Highlight Long Lines
 set colorcolumn=81
-hi clear SpellBad
-hi clear SpellCap
-hi SpellBad cterm=underline
-hi SpellCap cterm=bold
 " Auto limit line length
 set tw=80
 

@@ -13,6 +13,7 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 " spelling
+set spell
 set spelllang=en
 " terminal settings
 set encoding=utf-8
@@ -38,11 +39,8 @@ inoremap <C-U> <C-G>u<C-U>
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-nnoremap <silent> <F9> :set spell!<cr>
-inoremap <silent> <F9> <C-O>:set spell!<cr>
-
 lua <<EOF
-    -- require('spellsitter').setup()
+    require('spellsitter').setup()
 EOF
 
 " telescope

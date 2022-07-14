@@ -11,9 +11,10 @@ class Test {
         int a;
 };
 
-/* error fweafwea */
+/* error fweafwea*/
+a = 1;
 
-/* testa gfgweafwe */
+/* test */
 int main(int argc, char *argv[])
 {
     Test uwu;
