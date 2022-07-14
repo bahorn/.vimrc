@@ -2,16 +2,18 @@ call plug#begin('~/.vim/plugged')
     " Python venv Support
     Plug 'petobens/poet-v'
 
+    " Telescope
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+
     " UI
-    Plug 'itchyny/lightline.vim'
-    Plug 'flazz/vim-colorschemes'
+    Plug 'kyazdani42/nvim-web-devicons'
+    Plug 'nvim-lualine/lualine.nvim'
+    Plug 'marko-cerovac/material.nvim'
     Plug 'junegunn/rainbow_parentheses.vim'
-    Plug 'Yggdroot/indentLine'
     " System 
     Plug 'roxma/nvim-yarp' " tbh i have no idea why i have this, but i assume it's useful?
-    Plug 'preservim/nerdtree'
-    Plug 'tpope/vim-fugitive'
-
+    Plug 'kyazdani42/nvim-tree.lua'
 
     """ based off https://github.com/VonHeikemen/lsp-zero.nvim
     " LSP Support
@@ -34,4 +36,7 @@ call plug#begin('~/.vim/plugged')
 
     " Provides a nicer list of errors
     Plug 'folke/trouble.nvim'
+
+    " Treesitter Support
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()

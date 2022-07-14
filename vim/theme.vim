@@ -1,19 +1,8 @@
-colorscheme iceberg
-set background=dark
+" Theme settings
 
-let g:lightline = {
-    \   'colorscheme': 'seoul256',
-    \   'active': {
-    \       'left': [
-    \           [ 'mode', 'paste' ],
-    \           [ 'readonly', 'filename', 'modified' ],
-    \           [ 'gitbranch' ]
-    \       ],
-    \   },
-    \   'component_function': {
-    \       'gitbranch': 'FugitiveHead'
-    \   },
-    \ }
+colorscheme material
+let g:material_style = "deep ocean"
+set background=dark
 
 set laststatus=2
 

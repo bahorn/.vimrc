@@ -1,3 +1,5 @@
+" UI Related settings
+
 if has('mouse')
     set mouse=a
 endif
@@ -23,21 +25,48 @@ let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_guide_size = 1
 
-
-let g:indentLine_setConceal = 1
-let g:indentLine_conceallevel = 0
-let g:indentLine_char = '|'
-let g:indentLine_concealcursor = 'inc'
-let g:indentLine_enabled = 1
-let g:indentLine_setColors = 1
-let g:indentLine_leadingSpaceChar = ' '
-let g:indentLine_leadingSpaceEnabled = 1
-
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <C-n> :NERDTreeToggle<CR>
+map <C-n> :NvimTreeToggle<CR>
 
 augroup OpenAllFoldsOnFileOpen
     autocmd!
     autocmd BufRead * normal zR
 augroup END
+
+
+lua <<EOF
+    require("nvim-tree").setup()
+    
+    require('lualine').setup {
+      options = {
+        icons_enabled = true,
+        theme = 'auto',
+        component_separators = { left = '', right = ''},
+        section_separators = { left = '', right = ''},
+        disabled_filetypes = {},
+        always_divide_middle = true,
+        globalstatus = false,
+      },
+      sections = {
+        lualine_a = {'mode'},
+        lualine_b = {
+            {'branch', icon = ''},
+            'diff',
+            'diagnostics'
+        },
+        lualine_c = {'filename'},
+        lualine_x = {'encoding', 'filetype'},
+        lualine_y = {'progress'},
+        lualine_z = {'location'}
+      },
+      inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = {'filename'},
+        lualine_x = {'location'},
+        lualine_y = {},
+        lualine_z = {}
+      },
+      tabline = {},
+      extensions = {}
+    }
+EOF
