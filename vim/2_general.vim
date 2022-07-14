@@ -12,9 +12,6 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-" spelling
-set spell
-set spelllang=en
 " terminal settings
 set encoding=utf-8
 set fileencoding=utf-8
@@ -38,10 +35,6 @@ map Q gq
 inoremap <C-U> <C-G>u<C-U>
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-lua <<EOF
-    require('spellsitter').setup()
-EOF
 
 " telescope
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>

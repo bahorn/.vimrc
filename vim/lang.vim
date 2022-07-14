@@ -25,6 +25,8 @@ lua <<EOF
             additional_vim_regex_highlighting = false,
         },
     }
+    -- setup spelling
+    require('spellsitter').setup()
 
     -- pylsp needs to be done separately because of venv support
     require'lspconfig'.pylsp.setup{}
@@ -61,4 +63,5 @@ lua <<EOF
     }
 EOF
 
-" uwuwu uwuwu uwuwu gawkfweafwe 
+" set spell
+set spelllang=en
