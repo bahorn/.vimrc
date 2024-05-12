@@ -58,7 +58,7 @@ lua <<EOF
         fold_closed = ">", -- icon used for closed folds
         indent_lines = true, -- add an indent guide below the fold icons
         use_diagnostic_signs = true,
-        auto_open = true,
+        auto_open = false,
         auto_close = true
     }
 EOF

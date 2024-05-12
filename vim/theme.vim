@@ -1,7 +1,7 @@
 " Theme settings
 
-colorscheme material
 let g:material_style = "deep ocean"
+colorscheme material
 set background=dark
 
 set laststatus=2
