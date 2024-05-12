@@ -9,9 +9,9 @@ set number
 set guicursor=
 " manage tabs
 set expandtab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=8
+set shiftwidth=8
+set softtabstop=8
 " terminal settings
 set encoding=utf-8
 set fileencoding=utf-8
