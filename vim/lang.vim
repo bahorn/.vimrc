@@ -66,7 +66,7 @@ lua <<EOF
         indent_lines = true, -- add an indent guide below the fold icons
         use_diagnostic_signs = true,
         auto_open = false,
-        auto_close = false
+        auto_close = true
     }
 
     local cmp = require('cmp')
