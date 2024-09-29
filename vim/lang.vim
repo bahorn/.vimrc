@@ -31,25 +31,32 @@ lua <<EOF
     -- pylsp needs to be done separately because of venv support
     require'lspconfig'.pylsp.setup{}
 
-    local lsp = require('lsp-zero')
-    lsp.set_preferences({
-      suggest_lsp_servers = true,
-      setup_servers_on_start = true,
-      set_lsp_keymaps = true,
-      configure_diagnostics = true,
-      cmp_capabilities = true,
-      manage_nvim_cmp = true,
-      call_servers = 'local',
-      sign_icons = {
+
+    vim.opt.updatetime = 800
+
+    local lsp_zero = require('lsp-zero')
+
+    lsp_zero.on_attach(function(client, bufnr)
+      lsp_zero.default_keymaps({buffer = bufnr})
+      lsp_zero.highlight_symbol(client, bufnr)
+    end)
+
+    lsp_zero.ui({
+      float_border = 'rounded',
+      sign_text = {
         error = '✘',
         warn = '▲',
         hint = '⚑',
-        info = ''
-      }
+        info = '»',
+      },
     })
 
-    lsp.setup()
-
+    lsp_zero.omnifunc.setup({
+      trigger = '<C-Space>',
+      tabcomplete = true,
+      use_fallback = true,
+      update_on_delete = true,
+    })
 
     require("trouble").setup {
         mode = "workspace_diagnostics",
@@ -58,9 +65,26 @@ lua <<EOF
         fold_closed = ">", -- icon used for closed folds
         indent_lines = true, -- add an indent guide below the fold icons
         use_diagnostic_signs = true,
-        auto_open = true,
-        auto_close = true
+        auto_open = false,
+        auto_close = false
     }
+
+    local cmp = require('cmp')
+
+    cmp.setup({
+      sources = {
+        {name = 'nvim_lsp'},
+      },
+      snippet = {
+        expand = function(args)
+          -- You need Neovim v0.10 to use vim.snippet
+          vim.snippet.expand(args.body)
+        end,
+      },
+      mapping = cmp.mapping.preset.insert({}),
+    })
+
+
 EOF
 
 " set spell

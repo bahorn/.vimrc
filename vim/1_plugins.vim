@@ -41,4 +41,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
     Plug 'lewis6991/spellsitter.nvim'
+
+    " Justfile
+    Plug 'NoahTheDuke/vim-just'
 call plug#end()
