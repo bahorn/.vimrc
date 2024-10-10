@@ -1,13 +1,10 @@
 call plug#begin('~/.vim/plugged')
-    " Python venv Support
-    Plug 'petobens/poet-v'
-
     " Telescope
     Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 
     " UI
-    Plug 'kyazdani42/nvim-web-devicons'
+    " Plug 'kyazdani42/nvim-web-devicons'
     Plug 'nvim-lualine/lualine.nvim'
     Plug 'marko-cerovac/material.nvim'
     Plug 'junegunn/rainbow_parentheses.vim'
@@ -15,10 +12,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'roxma/nvim-yarp' " tbh i have no idea why i have this, but i assume it's useful?
     Plug 'kyazdani42/nvim-tree.lua'
 
-    """ based off https://github.com/VonHeikemen/lsp-zero.nvim
     " LSP Support
+    Plug 'williamboman/mason.nvim'
+    Plug 'williamboman/mason-lspconfig.nvim'
     Plug 'neovim/nvim-lspconfig'
-    Plug 'williamboman/nvim-lsp-installer'
 
     " Autocompletion
     Plug 'hrsh7th/nvim-cmp'

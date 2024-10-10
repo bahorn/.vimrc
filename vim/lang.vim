@@ -1,7 +1,16 @@
-let g:poetv_auto_activate = 1
-
 " language server setup
 lua <<EOF
+    require("mason").setup()
+    require("mason-lspconfig").setup()
+    require("mason-lspconfig").setup_handlers {
+        -- The first entry (without a key) will be the default handler
+        -- and will be called for each installed server that doesn't have
+        -- a dedicated handler.
+        function (server_name) -- default handler (optional)
+            require("lspconfig")[server_name].setup {}
+        end
+    }
+
     require'nvim-treesitter.configs'.setup {
         -- A list of parser names, or "all"
         ensure_installed = { "c", "cpp", "javascript", "python" },
@@ -27,10 +36,6 @@ lua <<EOF
     }
     -- setup spelling
     require('spellsitter').setup()
-
-    -- pylsp needs to be done separately because of venv support
-    require'lspconfig'.pylsp.setup{}
-
 
     vim.opt.updatetime = 800
 
@@ -59,14 +64,19 @@ lua <<EOF
     })
 
     require("trouble").setup {
-        mode = "workspace_diagnostics",
-        icons = true,
-        fold_open = "v", -- icon used for open folds
-        fold_closed = ">", -- icon used for closed folds
-        indent_lines = true, -- add an indent guide below the fold icons
-        use_diagnostic_signs = true,
-        auto_open = false,
-        auto_close = true
+      modes = {
+        test = {
+          mode = "diagnostics",
+          auto_open = true,
+          auto_close = true,
+          preview = {
+            type = "split",
+            relative = "win",
+            position = "right",
+            size = 0.3,
+          },
+        },
+      },
     }
 
     local cmp = require('cmp')
@@ -83,8 +93,6 @@ lua <<EOF
       },
       mapping = cmp.mapping.preset.insert({}),
     })
-
-
 EOF
 
 " set spell

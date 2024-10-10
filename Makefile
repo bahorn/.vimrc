@@ -8,5 +8,3 @@ install: init.vim
 	mkdir -p ~/.vim/tmp/
 	cp init.vim ~/.config/nvim/init.vim
 	vim +PlugInstall +PlugUpdate +UpdateRemotePlugins +qa
-	# LSPs we want
-	vim +"LspInstall clangd eslint bashls vimls ltex" +qa
