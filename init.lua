@@ -96,7 +96,6 @@ vim.api.nvim_create_autocmd("BufRead", {
 })
 
 -- Keymaps
-vim.keymap.set("n", "<C-a>", ":!make")
 vim.keymap.set("n", "<F7>", "mzgg=G`z")
 vim.keymap.set("n", "Q", "gq")
 vim.keymap.set("i", "<C-U>", "<C-G>u<C-U>")
@@ -133,6 +132,26 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 -- Statusline
+
+-- Capture the undo sequence number at startup for each buffer
+local session_start_seq = {}
+vim.api.nvim_create_autocmd("BufReadPost", {
+    callback = function(args)
+        -- After loading, seq_cur reflects the persistent undo position (= last save)
+        session_start_seq[args.buf] = vim.fn.undotree().seq_cur or 0
+    end,
+})
+
+local function undo_indicator()
+    local tree = vim.fn.undotree()
+    local start = session_start_seq[vim.api.nvim_get_current_buf()] or 0
+    if tree.seq_cur < start then
+        return "HIST"
+    end
+    return ""
+end
+
+
 require("lualine").setup({
     options = {
         icons_enabled = true,
@@ -164,7 +183,7 @@ require("lualine").setup({
             },
         },
         lualine_c = { "filename" },
-        lualine_x = { "encoding", "filetype" },
+        lualine_x = { undo_indicator, "encoding", "filetype" },
         lualine_y = { "progress" },
         lualine_z = { "location" },
     },
@@ -176,8 +195,6 @@ require("lualine").setup({
         lualine_y = {},
         lualine_z = {},
     },
-    tabline = {},
-    extensions = {},
 })
 
 -- Diagnostics: underlines only, no signs or inline text
