@@ -24,13 +24,12 @@ vim.call("plug#begin", vim.fn.expand("~/.vim/plugged"))
     Plug("marko-cerovac/material.nvim")
     Plug("nvim-lualine/lualine.nvim")
     Plug("junegunn/rainbow_parentheses.vim")
-    Plug("NoahTheDuke/vim-just")
     Plug("tpope/vim-commentary")
     -- Completion
     Plug("hrsh7th/nvim-cmp")
     Plug("hrsh7th/cmp-buffer")
     Plug("hrsh7th/cmp-path")
-    Plug("hrsh7th/cmp-nvim-lsp")  -- ready for when LSP is added
+    Plug("hrsh7th/cmp-nvim-lsp")
 vim.call("plug#end")
 
 -- Providers
