@@ -41,7 +41,62 @@ vim.g.python3_host_prog = "/usr/bin/python3"
 
 -- Options
 vim.opt.number = true
-vim.opt.ruler = true
+vim.opt.ruler = false
+vim.opt.cmdheight = 0
+
+local overlay_group = vim.api.nvim_create_augroup("BottomOverlay", { clear = true })
+vim.api.nvim_create_autocmd("ModeChanged", {
+    group = overlay_group,
+    pattern = "*",
+    callback = function()
+        local mode = vim.fn.mode()
+        local view = vim.fn.winsaveview()
+        -- Show overlay in any "active" editing mode (insert, replace, visual,
+        -- select, terminal, etc.) but hide it in normal/operator-pending modes.
+        -- "niI", "niR", "niV" (CTRL-O from insert/replace/select) are kept visible
+        -- so the screen does not jump while executing a temporary normal command.
+        -- Macro recording (`qa`) reports normal mode, so we also check reg_recording().
+        local is_normal = (mode:sub(1, 1) == "n" and mode:sub(2, 2) ~= "i" and vim.fn.reg_recording() == "")
+        if not is_normal then
+            vim.opt.cmdheight = 1
+            vim.opt.ruler = true
+        else
+            vim.opt.cmdheight = 0
+            vim.opt.ruler = false
+        end
+        vim.fn.winrestview(view)
+    end,
+})
+
+-- Mode doesn't change when starting/stopping a macro, so ModeChanged
+-- won't fire.  Use RecordingEnter/RecordingLeave to toggle the overlay
+-- for macro recording.  (pcall so we degrade gracefully on very old
+-- Neovim versions where these events may be missing.)
+pcall(function()
+    vim.api.nvim_create_autocmd("RecordingEnter", {
+        group = overlay_group,
+        callback = function()
+            local view = vim.fn.winsaveview()
+            vim.opt.cmdheight = 1
+            vim.opt.ruler = true
+            vim.fn.winrestview(view)
+        end,
+    })
+    vim.api.nvim_create_autocmd("RecordingLeave", {
+        group = overlay_group,
+        callback = function()
+            local view = vim.fn.winsaveview()
+            local mode = vim.fn.mode()
+            local is_normal = (mode:sub(1, 1) == "n" and mode:sub(2, 2) ~= "i")
+            if is_normal then
+                vim.opt.cmdheight = 0
+                vim.opt.ruler = false
+            end
+            vim.fn.winrestview(view)
+        end,
+    })
+end)
+
 vim.opt.showcmd = true
 vim.opt.incsearch = true
 vim.opt.hlsearch = true
