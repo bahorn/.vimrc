@@ -22,14 +22,16 @@ vim.cmd("source " .. plug_path)
 local Plug = vim.fn["plug#"]
 vim.call("plug#begin", vim.fn.expand("~/.vim/plugged"))
     Plug("marko-cerovac/material.nvim")
-    Plug("nvim-lualine/lualine.nvim")
-    Plug("junegunn/rainbow_parentheses.vim")
     Plug("tpope/vim-commentary")
+    Plug("junegunn/rainbow_parentheses.vim")
     -- Completion
     Plug("hrsh7th/nvim-cmp")
     Plug("hrsh7th/cmp-buffer")
     Plug("hrsh7th/cmp-path")
     Plug("hrsh7th/cmp-nvim-lsp")
+    Plug("saadparwaiz1/cmp_luasnip")
+    Plug('L3MON4D3/LuaSnip', {['tag'] = 'v2.5.0', ['do'] = 'make install_jsregexp'})
+    Plug("rafamadriz/friendly-snippets")
 vim.call("plug#end")
 
 -- Providers
@@ -45,7 +47,7 @@ vim.opt.incsearch = true
 vim.opt.hlsearch = true
 vim.opt.mouse = "a"
 vim.opt.guicursor = ""
-vim.opt.laststatus = 2
+vim.opt.laststatus = 0
 vim.opt.updatetime = 800
 vim.o.termsync = false
 vim.opt.title = false
@@ -109,8 +111,9 @@ vim.cmd("command! Q q")
 vim.cmd("command! WQ wq")
 
 -- Theme
-vim.g.material_style = "deep ocean"
+vim.g.material_style = "lighter"
 vim.cmd("colorscheme material")
+
 vim.cmd([[
     hi! RainbowLevel0 ctermfg=142 guifg=#b8bb26
     hi! RainbowLevel1 ctermfg=108 guifg=#8ec07c
@@ -151,51 +154,6 @@ local function undo_indicator()
     return ""
 end
 
-
-require("lualine").setup({
-    options = {
-        icons_enabled = true,
-        theme = "auto",
-        component_separators = { left = vim.fn.nr2char(0xe0b1), right = vim.fn.nr2char(0xe0b3) },
-        section_separators = { left = vim.fn.nr2char(0xe0b0), right = vim.fn.nr2char(0xe0b2) },
-        disabled_filetypes = {},
-        always_divide_middle = true,
-        globalstatus = false,
-    },
-    sections = {
-        lualine_a = { "mode" },
-        lualine_b = {
-            { "branch", icon = "" },
-            "diff",
-            {
-                "diagnostics",
-                sections = { "error", "warn", "info", "hint" },
-                diagnostics_color = {
-                    error = "DiagnosticError",
-                    warn  = "DiagnosticWarn",
-                    info  = "DiagnosticInfo",
-                    hint  = "DiagnosticHint",
-                },
-                symbols = { error = "E", warn = "W", info = "I", hint = "H" },
-                colored = true,
-                update_in_insert = false,
-                always_visible = false,
-            },
-        },
-        lualine_c = { "filename" },
-        lualine_x = { undo_indicator, "encoding", "filetype" },
-        lualine_y = { "progress" },
-        lualine_z = { "location" },
-    },
-    inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = { "filename" },
-        lualine_x = { "location" },
-        lualine_y = {},
-        lualine_z = {},
-    },
-})
 
 -- Diagnostics: underlines only, no signs or inline text
 vim.diagnostic.config({
@@ -288,34 +246,58 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "sh", "bash" },
-    callback = function()
-        lsp_start("bash-language-server", {
-            name     = "bashls",
-            cmd      = { "bash-language-server", "start" },
-            root_dir = find_root({ ".git" }),
-        })
-    end,
-})
 
 -- Completion
+local luasnip = require("luasnip")
+require("luasnip.loaders.from_vscode").lazy_load()
 cmp.setup({
+    snippet = {
+        expand = function(args)
+            luasnip.lsp_expand(args.body)
+        end,
+    },
     sources = cmp.config.sources({
         { name = "nvim_lsp" },
+        { name = "luasnip" },
         { name = "buffer" },
         { name = "path" },
     }),
-    mapping = cmp.mapping.preset.insert({
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<CR>"]      = cmp.mapping.confirm({ select = false }),
-        ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then cmp.select_next_item()
-            else fallback() end
+    mapping = {
+        ['<CR>'] = cmp.mapping(
+        function(fallback)
+            if cmp.visible() then
+                if luasnip.expandable() then
+                    luasnip.expand()
+                else
+                    cmp.confirm({
+                        select = true,
+                    })
+                end
+            else
+                fallback()
+            end
+        end),
+        ["<Tab>"] = cmp.mapping(
+        function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.locally_jumpable(1) then
+            luasnip.jump(1)
+          else
+            fallback()
+          end
+        end,
+        { "i", "s" }),
+
+        ["<S-Tab>"] = cmp.mapping(
+        function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.locally_jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
         end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then cmp.select_prev_item()
-            else fallback() end
-        end, { "i", "s" }),
-    }),
+    }
 })
