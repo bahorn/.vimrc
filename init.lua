@@ -21,7 +21,7 @@ vim.cmd("source " .. plug_path)
 -- Plugins
 local Plug = vim.fn["plug#"]
 vim.call("plug#begin", vim.fn.expand("~/.vim/plugged"))
-    Plug("marko-cerovac/material.nvim")
+    Plug('yorickpeterse/nvim-grey')
     Plug("tpope/vim-commentary")
     Plug("junegunn/rainbow_parentheses.vim")
     -- Completion
@@ -111,8 +111,7 @@ vim.cmd("command! Q q")
 vim.cmd("command! WQ wq")
 
 -- Theme
-vim.g.material_style = "lighter"
-vim.cmd("colorscheme material")
+vim.cmd("colorscheme grey")
 
 vim.cmd([[
     hi! RainbowLevel0 ctermfg=142 guifg=#b8bb26
