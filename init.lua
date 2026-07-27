@@ -32,12 +32,14 @@ vim.call("plug#begin", vim.fn.expand("~/.vim/plugged"))
     Plug("saadparwaiz1/cmp_luasnip")
     Plug('L3MON4D3/LuaSnip', {['tag'] = 'v2.5.0', ['do'] = 'make install_jsregexp'})
     Plug("rafamadriz/friendly-snippets")
+    Plug("Julian/lean.nvim")
 vim.call("plug#end")
 
 -- Providers
 vim.g.loaded_perl_provider = 0
 vim.g.python_host_prog = "/usr/bin/python3"
 vim.g.python3_host_prog = "/usr/bin/python3"
+vim.g.lean_config = { mappings = true }
 
 -- Options
 vim.opt.number = true
